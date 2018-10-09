@@ -24,8 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.ffb.R;
 import cn.ffb.dialog.core.DialogManager;
 import cn.ffb.dialog.core.IDialog;
@@ -39,7 +37,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  * Created by lingfei on 2017/6/5.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements
+public abstract class FBaseActivity extends AppCompatActivity implements
         IDialogCreator,
         FragmentHelper.OnFragmentChangeListener,
         SwipeBackActivityBase {
@@ -50,23 +48,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private FragmentHelper mFragmentHelper;
     private Config mConfig = new Config();
     private SwipeBackActivityHelper mSwipeBackActivityHelper;
-    private Unbinder mUnbinder;
 
     public static class Config {
         private boolean isToolbarWrapper = true;
         private boolean isSwipeBackWrapper = true;
         private boolean isEventBusEnable = false;
-        private boolean isButterKnifeBind = true;
         private boolean isFullScreen = false;
         private boolean isDartInject = false;
 
         public Config setDartInject(boolean dartInject) {
             this.isDartInject = dartInject;
-            return this;
-        }
-
-        public Config setButterKnifeBind(boolean butterKnifeBind) {
-            isButterKnifeBind = butterKnifeBind;
             return this;
         }
 
@@ -117,9 +108,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             mSwipeBackActivityHelper.onActivityCreate();
         }
         this.setContentView(getContentViewLayoutId());
-        if (mConfig.isButterKnifeBind) {
-            mUnbinder = ButterKnife.bind(this);
-        }
         this.mActivityManager = ActivityManager.getInstance();
         this.mActivityManager.addActivity(this);
         this.mDialogManager = new DialogManager(this);
@@ -307,8 +295,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected boolean onBackPressedFragment() {
         if (this.mFragmentHelper != null) {
             FragmentHelper.TabInfo tabInfo = this.mFragmentHelper.getLastTabInfo();
-            if (tabInfo != null && tabInfo.getFragment() instanceof BaseFragment) {
-                BaseFragment baseFragment = (BaseFragment) tabInfo.getFragment();
+            if (tabInfo != null && tabInfo.getFragment() instanceof FBaseFragment) {
+                FBaseFragment baseFragment = (FBaseFragment) tabInfo.getFragment();
                 if (!baseFragment.onBackPressedFragment()) {
                     return false;
                 }
@@ -377,9 +365,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
-        if (mUnbinder != null) {
-            this.mUnbinder.unbind();
-        }
         this.mActivityManager.removeActivity(this);
         super.onDestroy();
     }

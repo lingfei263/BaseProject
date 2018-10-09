@@ -15,8 +15,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.ffb.dialog.core.DialogManager;
 import cn.ffb.dialog.core.IDialog;
 import cn.ffb.dialog.core.IDialogCreator;
@@ -25,17 +23,15 @@ import cn.ffb.dialog.core.IDialogCreator;
  * Created by lingfei on 2017/6/5.
  */
 
-public abstract class BaseFragment extends Fragment implements
+public abstract class FBaseFragment extends Fragment implements
         IDialogCreator,
         FragmentHelper.OnFragmentChangeListener {
     private DialogManager mDialogManager;
     private FragmentHelper mFragmentHelper;
     private Config mConfig = new Config();
-    private Unbinder mUnbinder;
 
     public static class Config {
         private boolean isEventBusEnable = false;
-        private boolean isButterKnifeBind = true;
         private boolean isDartInject = false;
 
         public Config setDartInject(boolean dartInject) {
@@ -49,7 +45,6 @@ public abstract class BaseFragment extends Fragment implements
         }
 
         public Config setButterKnifeBind(boolean butterKnifeBind) {
-            isButterKnifeBind = butterKnifeBind;
             return this;
         }
 
@@ -185,8 +180,8 @@ public abstract class BaseFragment extends Fragment implements
     public boolean onBackPressedFragment() {
         if (this.mFragmentHelper != null) {
             FragmentHelper.TabInfo tabInfo = this.mFragmentHelper.getLastTabInfo();
-            if (tabInfo != null && tabInfo.getFragment() instanceof BaseFragment) {
-                BaseFragment baseFragment = (BaseFragment) tabInfo.getFragment();
+            if (tabInfo != null && tabInfo.getFragment() instanceof FBaseFragment) {
+                FBaseFragment baseFragment = (FBaseFragment) tabInfo.getFragment();
                 if (!baseFragment.onBackPressedFragment()) {
                     return false;
                 }
@@ -199,9 +194,6 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getContentViewLayoutId(), null);
-        if (mConfig.isButterKnifeBind) {
-            mUnbinder = ButterKnife.bind(this, view);
-        }
         return view;
     }
 
@@ -252,9 +244,6 @@ public abstract class BaseFragment extends Fragment implements
 
     @Override
     public void onDestroyView() {
-        if (mUnbinder != null) {
-            this.mUnbinder.unbind();
-        }
         super.onDestroyView();
     }
 

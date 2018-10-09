@@ -5,18 +5,18 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.ffb.base.BaseActivity;
 import cn.ffb.base.MessageEvent;
+import cn.ffb.baseproject.base.BaseActivity;
 
 
 public class MainActivity extends BaseActivity {
-    @BindView(R2.id.button1)
+    @BindView(R.id.button1)
     Button mButton1;
-    @BindView(R2.id.button2)
+    @BindView(R.id.button2)
     Button mButton2;
-    @BindView(R2.id.button3)
+    @BindView(R.id.button3)
     Button mButton3;
-    @BindView(R2.id.button4)
+    @BindView(R.id.button4)
     Button mButton4;
 
     @Override
@@ -31,7 +31,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R2.id.button1, R2.id.button2, R2.id.button3, R2.id.button4})
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4})
     public void onButtonClick(Button button) {
         switch (button.getId()) {
             case R.id.button1:

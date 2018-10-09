@@ -36,7 +36,6 @@ dependencies {
     compile 'com.orhanobut:logger:1.15'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cat.ereza:customactivityoncrash:1.2.0'
-    compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.f2prateek.dart:dart:2.0.1'
     compile 'com.f2prateek.dart:henson:2.0.1'
     compile 'me.imid.swipebacklayout.lib:library:1.1.0'
