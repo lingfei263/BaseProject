@@ -48,6 +48,7 @@ public abstract class FBaseActivity extends AppCompatActivity implements
     private FragmentHelper mFragmentHelper;
     private Config mConfig = new Config();
     private SwipeBackActivityHelper mSwipeBackActivityHelper;
+    private static Toast toast;
 
     public static class Config {
         private boolean isToolbarWrapper = true;
@@ -469,14 +470,13 @@ public abstract class FBaseActivity extends AppCompatActivity implements
      * @param message
      */
     public void showToast(final String message) {
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-            }
-
-        });
+        if (toast == null) {
+            toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+            toast.setText(message);
+        } else {
+            toast.setText(message);
+        }
+        toast.show();
 
     }
 
